@@ -9,78 +9,92 @@
 
 body{
   margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:linear-gradient(135deg,#ffe4ec,#ffffff);
+  overflow:hidden;
+  font-family:Segoe UI, sans-serif;
+  background:linear-gradient(-45deg,#ffe4ec,#ffd6e7,#fff0f5,#ffffff);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  overflow:hidden;
+  height:100vh;
 }
 
-/* Carte principale */
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:0;
+}
+
 .card{
-  background:white;
-  padding:30px;
-  border-radius:20px;
+  position:relative;
+  z-index:2;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(10px);
+  padding:35px;
+  border-radius:25px;
   text-align:center;
   width:90%;
-  max-width:500px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+  max-width:600px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.15);
+  animation:fadeIn 1s ease;
 }
 
-/* Texte adaptatif */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
 h1{
-  font-size:clamp(22px,5vw,32px);
-  margin-bottom:25px;
+  font-size:clamp(24px,5vw,38px);
+  min-height:60px;
 }
 
-/* Zone des boutons */
 .arena{
   position:relative;
-  height:160px;
+  height:200px;
   display:flex;
   justify-content:center;
   align-items:center;
 }
 
-/* Boutons */
 button{
-  padding:12px 25px;
+  padding:12px 28px;
   font-size:18px;
   border-radius:999px;
   border:none;
   cursor:pointer;
+  transition:0.2s;
 }
 
 #yes{
   background:#ff4d6d;
   color:white;
   margin-right:10px;
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,77,109,0.5)}
+  70%{box-shadow:0 0 0 25px rgba(255,77,109,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}
 }
 
 #no{
   background:white;
-  border:2px solid #ccc;
+  border:2px solid #ddd;
   position:absolute;
 }
 
-/* Coeurs animés */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation:float 6s linear forwards;
-}
-
-@keyframes float{
-  from{transform:translateY(0);opacity:1}
-  to{transform:translateY(-120vh);opacity:0}
-}
-
-/* Responsive ajustements */
 @media (max-width:500px){
-  .arena{height:140px;}
+  .arena{height:160px;}
   button{font-size:16px;padding:10px 20px;}
 }
 
@@ -89,8 +103,10 @@ button{
 
 <body>
 
+<canvas id="canvas"></canvas>
+
 <div class="card">
-  <h1>Lisa, veux-tu être ma Valentine ?</h1>
+  <h1 id="question"></h1>
 
   <div class="arena" id="arena">
     <button id="yes">Oui</button>
@@ -100,92 +116,173 @@ button{
 
 <script>
 
-/* Coeurs qui montent */
-function spawnHeart(){
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.textContent=Math.random()>0.5?"💖":"💕";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=(16+Math.random()*20)+"px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
+/* TYPEWRITER */
+const text="Lisa, veux-tu être ma Valentine ?";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("question").textContent+=text[i];
+    i++;
+    setTimeout(type,45);
+  }
 }
-setInterval(spawnHeart,800);
+type();
 
 
-/* Bouton NON qui fuit */
-const noBtn=document.getElementById("no");
-const arena=document.getElementById("arena");
+/* PARTICLES CANVAS */
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-function moveNoButton(){
-  const rect=arena.getBoundingClientRect();
-  const maxX=rect.width-80;
-  const maxY=rect.height-40;
-
-  noBtn.style.left=Math.random()*maxX+"px";
-  noBtn.style.top=Math.random()*maxY+"px";
-}
-
-/* PC */
-arena.addEventListener("mousemove",(e)=>{
-  const r=noBtn.getBoundingClientRect();
-  const dist=Math.hypot(
-    e.clientX-(r.left+r.width/2),
-    e.clientY-(r.top+r.height/2)
-  );
-  if(dist<100) moveNoButton();
+window.addEventListener("resize",()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 });
 
-/* Mobile (tap ou toucher proche) */
-arena.addEventListener("touchstart",moveNoButton);
+let particles=[];
+
+for(let i=0;i<60;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:(Math.random()-0.5)*0.5,
+    vy:(Math.random()-0.5)*0.5,
+    size:2+Math.random()*2
+  });
+}
+
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(255,150,180,0.6)";
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    if(p.x<0||p.x>canvas.width)p.vx*=-1;
+    if(p.y<0||p.y>canvas.height)p.vy*=-1;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
 
 
-/* Bouton OUI */
+/* COEURS FLOTTANTS */
+function heartRain(){
+  const h=document.createElement("div");
+  h.textContent=Math.random()>0.5?"💖":"💕";
+  h.style.position="fixed";
+  h.style.left=Math.random()*100+"vw";
+  h.style.bottom="-20px";
+  h.style.fontSize=(15+Math.random()*25)+"px";
+  h.style.animation="rise 6s linear forwards";
+  h.style.pointerEvents="none";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+
+const style=document.createElement("style");
+style.innerHTML=`
+@keyframes rise{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-120vh);opacity:0}
+}`;
+document.head.appendChild(style);
+
+setInterval(heartRain,700);
+
+
+/* BOUTON NON EVASIF */
+const no=document.getElementById("no");
+const arena=document.getElementById("arena");
+
+arena.addEventListener("mousemove",(e)=>{
+  const r=no.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
+  const dist=Math.sqrt(dx*dx+dy*dy);
+
+  if(dist<140){
+    const rect=arena.getBoundingClientRect();
+    no.style.left=Math.random()*(rect.width-100)+"px";
+    no.style.top=Math.random()*(rect.height-60)+"px";
+  }
+});
+
+arena.addEventListener("touchstart",()=>{
+  const rect=arena.getBoundingClientRect();
+  no.style.left=Math.random()*(rect.width-100)+"px";
+  no.style.top=Math.random()*(rect.height-60)+"px";
+});
+
+
+/* FEU D'ARTIFICE */
+function firework(){
+  for(let i=0;i<40;i++){
+    const spark=document.createElement("div");
+    spark.style.position="fixed";
+    spark.style.width="6px";
+    spark.style.height="6px";
+    spark.style.borderRadius="50%";
+    spark.style.background=["#ff4d6d","#ffd166","#ff85a1","#fff"][Math.floor(Math.random()*4)];
+    spark.style.left=window.innerWidth/2+"px";
+    spark.style.top=window.innerHeight/2+"px";
+
+    const angle=Math.random()*2*Math.PI;
+    const distance=200+Math.random()*200;
+    spark.animate([
+      {transform:"translate(0,0)",opacity:1},
+      {transform:`translate(${Math.cos(angle)*distance}px,${Math.sin(angle)*distance}px)`,opacity:0}
+    ],{duration:1500});
+
+    document.body.appendChild(spark);
+    setTimeout(()=>spark.remove(),1500);
+  }
+}
+
+
+/* CLICK OUI */
 document.getElementById("yes").onclick=()=>{
-  const w=window.open("","_blank");
-  w.document.write(`
-  <html>
-  <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-  body{
-    margin:0;
-    font-family:Arial;
-    background:linear-gradient(135deg,#ffe4ec,#ffffff);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    text-align:center;
-    padding:20px;
-  }
-  img{
-    width:90%;
-    max-width:320px;
-    border-radius:15px;
-    margin:20px 0;
-  }
-  h1{font-size:clamp(24px,5vw,34px);}
-  .love{
-    font-size:clamp(26px,6vw,40px);
-    color:#ff4d6d;
-    font-weight:bold;
-  }
-  </style>
-  </head>
 
-  <body>
-    <div>
-      <h1>Yes, meilleure décision de ta vie</h1>
-      <img src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif">
-      <div class="love">Je t'aime Lisa ❤️</div>
-    </div>
-  </body>
-  </html>
-  `);
+  for(let i=0;i<30;i++){
+    setTimeout(heartRain,i*40);
+  }
+
+  setTimeout(()=>{
+    firework();
+  },400);
+
+  setTimeout(()=>{
+    document.body.innerHTML=`
+      <div style="
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      flex-direction:column;
+      text-align:center;
+      background:linear-gradient(135deg,#ffe4ec,#fff);
+      font-family:Segoe UI;
+      padding:20px;">
+        <h1 style="font-size:clamp(26px,5vw,42px);">
+        Yes, meilleure décision de ta vie 💛
+        </h1>
+
+        <img src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
+             style="width:90%;max-width:350px;border-radius:20px;margin:20px 0;">
+
+        <div style="font-size:clamp(30px,6vw,48px);color:#ff4d6d;font-weight:bold;">
+        Je t'aime Lisa ❤️
+        </div>
+      </div>
+    `;
+  },1600);
 };
 
 </script>
-
 </body>
 </html>
