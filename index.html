@@ -1,477 +1,191 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lisa 💖</title>
-  <style>
-    :root{
-      --pink:#ff3b6b;
-      --pink2:#ff86a6;
-      --ink:#111827;
-      --card:rgba(255,255,255,.88);
-      --stroke:rgba(17,24,39,.10);
-      --shadow:0 24px 70px rgba(0,0,0,.14);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 600px at 20% 15%, rgba(255,59,107,.18), rgba(255,59,107,0) 65%),
-        radial-gradient(900px 600px at 80% 20%, rgba(233,221,255,.25), rgba(233,221,255,0) 60%),
-        linear-gradient(180deg, #fff1f6, #ffffff);
-      overflow:hidden;
-      display:grid;
-      place-items:center;
-      padding:24px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pour Lisa ❤️</title>
 
-    .card{
-      width:min(820px, 96vw);
-      background:var(--card);
-      border:1px solid var(--stroke);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-    }
-    .top{
-      padding:16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      border-bottom:1px solid rgba(17,24,39,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.35));
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:-.01em;
-    }
-    .dot{
-      width:10px;height:10px;border-radius:999px;
-      background:radial-gradient(circle at 30% 30%, #fff, var(--pink));
-      box-shadow:0 0 0 6px rgba(255,59,107,.12);
-    }
-    .chip{
-      border:1px solid rgba(17,24,39,.12);
-      background:rgba(255,255,255,.75);
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:13px;
-      cursor:pointer;
-      user-select:none;
-      transition:transform .12s ease, filter .12s ease;
-      white-space:nowrap;
-    }
-    .chip:hover{transform:translateY(-1px); filter:brightness(1.02)}
-    .chip:active{transform:translateY(0) scale(.99)}
-    .chip.primary{
-      border-color: rgba(255,59,107,.25);
-      background: rgba(255,59,107,.10);
-      color:#9f1239;
-    }
+<style>
 
-    .content{ padding:18px; }
-    .panel{
-      border:1px solid rgba(17,24,39,.08);
-      background:rgba(255,255,255,.68);
-      border-radius:22px;
-      overflow:hidden;
-      position:relative;
-    }
-    .panel-inner{padding:20px}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#ffe4ec,#ffffff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  overflow:hidden;
+}
 
-    h1{
-      margin:0;
-      font-size: clamp(26px, 4vw, 44px);
-      line-height:1.05;
-      letter-spacing:-.03em;
-    }
-    .sub{
-      margin:10px 0 0 0;
-      opacity:.82;
-      font-size:14px;
-      line-height:1.45;
-    }
+/* Carte principale */
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  width:90%;
+  max-width:500px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
 
-    .arena{
-      margin-top:16px;
-      height:220px;
-      border-radius:20px;
-      border:2px dashed rgba(255,59,107,.22);
-      background:
-        radial-gradient(600px 260px at 50% 45%, rgba(255,59,107,.10), rgba(255,255,255,0)),
-        rgba(255,255,255,.55);
-      position:relative;
-      overflow:hidden;
-    }
-    .btn{
-      position:absolute;
-      padding:14px 26px;
-      border-radius:999px;
-      border:none;
-      font-weight:900;
-      font-size:18px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .12s ease, filter .12s ease;
-      will-change: left, top, transform;
-    }
-    .btn:active{transform: translate(-50%, -50%) translateY(1px) scale(.99);}
+/* Texte adaptatif */
+h1{
+  font-size:clamp(22px,5vw,32px);
+  margin-bottom:25px;
+}
 
-    #yes{
-      left:30%;
-      top:55%;
-      transform: translate(-50%, -50%);
-      color:#fff;
-      background: linear-gradient(180deg, var(--pink2), var(--pink));
-      box-shadow: 0 16px 32px rgba(255,59,107,.25);
-      animation: yesPulse 1.8s ease-in-out infinite;
-    }
-    @keyframes yesPulse{ 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.06)} }
+/* Zone des boutons */
+.arena{
+  position:relative;
+  height:160px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    #no{
-      left:72%;
-      top:55%;
-      transform: translate(-50%, -50%);
-      background:#fff;
-      color:var(--ink);
-      border:2px solid rgba(17,24,39,.14);
-      box-shadow: 0 12px 24px rgba(0,0,0,.10);
-      touch-action:none;
-    }
+/* Boutons */
+button{
+  padding:12px 25px;
+  font-size:18px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+}
 
-    .hint{
-      position:absolute;
-      left:12px;
-      bottom:12px;
-      font-size:12px;
-      opacity:.75;
-      background:rgba(255,255,255,.70);
-      border:1px solid rgba(17,24,39,.08);
-      padding:8px 10px;
-      border-radius:999px;
-    }
+#yes{
+  background:#ff4d6d;
+  color:white;
+  margin-right:10px;
+}
 
-    /* Floating hearts */
-    .float{
-      position:fixed;
-      bottom:-30px;
-      left:0;
-      transform: translateX(-50%);
-      pointer-events:none;
-      animation: rise linear forwards;
-      opacity:.9;
-      filter: drop-shadow(0 10px 15px rgba(0,0,0,.10));
-      z-index:2;
-    }
-    @keyframes rise{
-      to{ transform: translateX(-50%) translateY(-125vh) scale(1.6); opacity:0; }
-    }
+#no{
+  background:white;
+  border:2px solid #ccc;
+  position:absolute;
+}
 
-    /* Final Modal */
-    .overlay{
-      position:fixed; inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      background:rgba(15,23,42,.55);
-      z-index:50;
-    }
-    .overlay.show{display:flex;}
-    .modal{
-      width:min(860px, 96vw);
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(255,255,255,.20);
-      border-radius:28px;
-      box-shadow:0 30px 90px rgba(0,0,0,.30);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-    }
-    .modal-top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 16px;
-      border-bottom:1px solid rgba(17,24,39,.10);
-      background:linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.35));
-      font-weight:900;
-    }
-    .close{
-      border:none; cursor:pointer;
-      border-radius:999px;
-      padding:10px 12px;
-      background:rgba(17,24,39,.08);
-      font-weight:900;
-    }
-    .modal-body{
-      padding:18px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      align-items:center;
-      background:
-        radial-gradient(900px 520px at 50% 35%, rgba(255,59,107,.12), rgba(255,255,255,0)),
-        rgba(255,255,255,.55);
-    }
-    @media (max-width: 860px){ .modal-body{grid-template-columns:1fr;} }
-    .box{
-      border:1px solid rgba(17,24,39,.08);
-      background:rgba(255,255,255,.72);
-      border-radius:22px;
-      padding:16px;
-      text-align:center;
-    }
-    .big{
-      margin:6px 0 8px 0;
-      font-size: clamp(22px, 3.2vw, 34px);
-      letter-spacing:-.02em;
-    }
-    .love{
-      margin:10px 0 0 0;
-      font-size: clamp(28px, 5vw, 52px);
-      color:var(--pink);
-      font-weight:1000;
-      letter-spacing:-.03em;
-    }
-    img{
-      width:min(420px, 100%);
-      border-radius:18px;
-      box-shadow:0 18px 45px rgba(0,0,0,.14);
-    }
+/* Coeurs animés */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:20px;
+  animation:float 6s linear forwards;
+}
 
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:22px;
-      transform:translateX(-50%);
-      background:rgba(17,24,39,.92);
-      color:#fff;
-      padding:12px 14px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:13px;
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      z-index:60;
-    }
-    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px);}
+@keyframes float{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-120vh);opacity:0}
+}
 
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none !important; transition:none !important;}
-    }
-  </style>
+/* Responsive ajustements */
+@media (max-width:500px){
+  .arena{height:140px;}
+  button{font-size:16px;padding:10px 20px;}
+}
+
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <div class="top">
-      <div class="brand"><span class="dot"></span><span>Saint-Valentin — Lisa</span></div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-        <button class="chip primary" id="burst">Pluie de cœurs 💖</button>
-      </div>
-    </div>
 
-    <div class="content">
-      <div class="panel">
-        <div class="panel-inner">
-          <h1>Lisa, veux-tu être ma Valentine ?</h1>
-          <p class="sub">💖</p>
+<div class="card">
+  <h1>Lisa, veux-tu être ma Valentine ?</h1>
 
-          <div class="arena" id="arena">
-            <button class="btn" id="yes">Oui</button>
-            <button class="btn" id="no">Non</button>
-            <div class="hint" id="hint">Indice : “Non” est très timide.</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="arena" id="arena">
+    <button id="yes">Oui</button>
+    <button id="no">Non</button>
   </div>
-
-  <!-- Final Modal -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="modal-top">
-        <div>Final 💖</div>
-        <button class="close" id="close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="box">
-          <div class="big">Yes, meilleure décision de ta vie ✨</div>
-          <div class="love">Je t'aime Lisa</div>
-        </div>
-        <div class="box">
-          <img id="gif" alt="celebration gif" />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
+</div>
 
 <script>
-  const arena = document.getElementById("arena");
-  const yes = document.getElementById("yes");
-  const no  = document.getElementById("no");
-  const hint = document.getElementById("hint");
 
-  const overlay = document.getElementById("overlay");
-  const closeBtn = document.getElementById("close");
-  const toastEl = document.getElementById("toast");
-  const gif = document.getElementById("gif");
-
-  // GIF (tu peux remplacer par un autre)
-gif.src = "https://media.giphy.com/media/3oEduSbSGpGaRX2Vri/giphy.gif"; // Minion qui célèbre
-
-
+/* Coeurs qui montent */
+function spawnHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.textContent=Math.random()>0.5?"💖":"💕";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(16+Math.random()*20)+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(spawnHeart,800);
 
 
-  function toast(msg){
-    toastEl.textContent = msg;
-    toastEl.classList.add("show");
-    clearTimeout(toast._t);
-    toast._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
+/* Bouton NON qui fuit */
+const noBtn=document.getElementById("no");
+const arena=document.getElementById("arena");
+
+function moveNoButton(){
+  const rect=arena.getBoundingClientRect();
+  const maxX=rect.width-80;
+  const maxY=rect.height-40;
+
+  noBtn.style.left=Math.random()*maxX+"px";
+  noBtn.style.top=Math.random()*maxY+"px";
+}
+
+/* PC */
+arena.addEventListener("mousemove",(e)=>{
+  const r=noBtn.getBoundingClientRect();
+  const dist=Math.hypot(
+    e.clientX-(r.left+r.width/2),
+    e.clientY-(r.top+r.height/2)
+  );
+  if(dist<100) moveNoButton();
+});
+
+/* Mobile (tap ou toucher proche) */
+arena.addEventListener("touchstart",moveNoButton);
+
+
+/* Bouton OUI */
+document.getElementById("yes").onclick=()=>{
+  const w=window.open("","_blank");
+  w.document.write(`
+  <html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  body{
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#ffe4ec,#ffffff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    text-align:center;
+    padding:20px;
   }
-
-  // Floating hearts
-  function spawnFloat(x, emoji, duration=6500, size=18){
-    const el = document.createElement("div");
-    el.className = "float";
-    el.textContent = emoji;
-    el.style.left = x + "px";
-    el.style.fontSize = size + "px";
-    el.style.animationDuration = duration + "ms";
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(), duration + 50);
+  img{
+    width:90%;
+    max-width:320px;
+    border-radius:15px;
+    margin:20px 0;
   }
-
-  function spawnHeartsBurst(cx, n=18){
-    const emojis = ["💖","💕","💘","💗","⚜️"];
-    for(let i=0;i<n;i++){
-      const e = emojis[Math.floor(Math.random()*emojis.length)];
-      const x = cx + (Math.random()*140 - 70);
-      const dur = 4200 + Math.random()*2600;
-      const size = 16 + Math.random()*22;
-      spawnFloat(x, e, dur, size);
-    }
+  h1{font-size:clamp(24px,5vw,34px);}
+  .love{
+    font-size:clamp(26px,6vw,40px);
+    color:#ff4d6d;
+    font-weight:bold;
   }
+  </style>
+  </head>
 
-  // gentle background hearts
-  setInterval(()=>{
-    const x = Math.random()*innerWidth;
-    const e = Math.random()<0.82 ? (Math.random()<0.5 ? "💖" : "💕") : "⚜️";
-    spawnFloat(x, e, 6000 + Math.random()*4000, 14 + Math.random()*20);
-  }, 520);
+  <body>
+    <div>
+      <h1>Yes, meilleure décision de ta vie</h1>
+      <img src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif">
+      <div class="love">Je t'aime Lisa ❤️</div>
+    </div>
+  </body>
+  </html>
+  `);
+};
 
-  document.getElementById("burst").addEventListener("click", ()=>{
-    spawnHeartsBurst(innerWidth*0.5, 30);
-    toast("💖");
-  });
-
-  // YES => show final
-  yes.addEventListener("click", ()=>{
-    const r = yes.getBoundingClientRect();
-    spawnHeartsBurst(r.left + r.width/2, 28);
-    overlay.classList.add("show");
-    toast("Bonne réponse 💖");
-  });
-
-  closeBtn.addEventListener("click", ()=> overlay.classList.remove("show"));
-  overlay.addEventListener("click", (e)=>{ if(e.target===overlay) overlay.classList.remove("show"); });
-
-  // NO button evasion (simple + reliable)
-  let difficulty = 1.0;
-
-  function rect(el){ return el.getBoundingClientRect(); }
-  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-
-  function setNoCenter(cx, cy){
-    const ar = rect(arena);
-    const bw = no.offsetWidth;
-    const bh = no.offsetHeight;
-    const pad = 10;
-    const x = clamp(cx, pad + bw/2, ar.width - pad - bw/2);
-    const y = clamp(cy, pad + bh/2, ar.height - pad - bh/2);
-    no.style.left = x + "px";
-    no.style.top  = y + "px";
-    no.style.transform = "translate(-50%, -50%)";
-  }
-
-  function getNoCenter(){
-    const ar = rect(arena);
-    const nr = rect(no);
-    return {
-      x:(nr.left - ar.left) + nr.width/2,
-      y:(nr.top  - ar.top ) + nr.height/2
-    };
-  }
-
-  function moveNoAway(clientX, clientY){
-    const ar = rect(arena);
-    const mx = clientX - ar.left;
-    const my = clientY - ar.top;
-
-    const c = getNoCenter();
-    let dx = c.x - mx;
-    let dy = c.y - my;
-    let dist = Math.hypot(dx, dy) || 0.0001;
-
-    const radius = clamp(150 - difficulty*14, 70, 150);
-    if(dist > radius) return;
-
-    dx /= dist; dy /= dist;
-    const push = (55 + difficulty*12) + (radius - dist) * 0.35;
-
-    const jx = dx + (Math.random()*0.5 - 0.25);
-    const jy = dy + (Math.random()*0.5 - 0.25);
-
-    setNoCenter(c.x + jx*push, c.y + jy*push);
-
-    difficulty = Math.min(6, difficulty + 0.08);
-
-    if(difficulty > 2.0) hint.textContent = "Indice : il panique 😳";
-    if(difficulty > 3.6) hint.textContent = "Indice : impossible.";
-  }
-
-  // Init position
-  function initNo(){
-    const ar = rect(arena);
-    setNoCenter(ar.width*0.72, ar.height*0.55);
-  }
-  window.addEventListener("resize", initNo);
-  initNo();
-
-  // Desktop + mobile
-  arena.addEventListener("mousemove", (e)=> moveNoAway(e.clientX, e.clientY), {passive:true});
-  arena.addEventListener("pointerdown", (e)=> moveNoAway(e.clientX, e.clientY), {passive:true});
-  no.addEventListener("mouseenter", (e)=> moveNoAway(e.clientX, e.clientY), {passive:true});
-  no.addEventListener("pointerdown", (e)=>{
-    e.preventDefault(); e.stopPropagation();
-    difficulty = Math.min(6, difficulty + 0.35);
-    moveNoAway(e.clientX, e.clientY);
-    toast("Pas celui-là 😄");
-  });
-
-  // “Dance”: fast pointer => extra hearts (kept subtle)
-  let last = {x:innerWidth/2, y:innerHeight/2, t:performance.now()};
-  window.addEventListener("pointermove", (e)=>{
-    const now = performance.now();
-    const dt = Math.max(1, now - last.t);
-    const sp = Math.hypot(e.clientX-last.x, e.clientY-last.y) / dt;
-    last = {x:e.clientX, y:e.clientY, t:now};
-
-    if(sp > 0.95){
-      spawnFloat(e.clientX, Math.random()<0.5 ? "💖" : "💕", 3000 + Math.random()*2000, 14 + Math.random()*12);
-    }
-  }, {passive:true});
 </script>
+
 </body>
 </html>
